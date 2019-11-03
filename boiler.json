@@ -1,0 +1,134 @@
+{
+  "params": [
+    {
+      "name": "name",
+      "displayName": "Project Name",
+      "description": "Name of the Spring Boot project",
+      "type": "positional"
+    },
+    {
+      "name": "version",
+      "displayName": "Version",
+      "description": "Version of the project",
+      "type": "optional",
+      "defaultValue": "0.0.1"
+    },
+    {
+      "name": "group",
+      "displayName": "Group ID",
+      "description": "(e.g., com.company.project)",
+      "type": "optional"
+    },
+    {
+      "name": "force",
+      "displayName": "Force",
+      "description": "Force creation of project (y/n)",
+      "type": "optional",
+      "defaultValue": "n"
+    },
+    {
+      "name": "spring-boot-version",
+      "displayName": "Spring Boot Version",
+      "description": "Spring Boot API version",
+      "type": "optional",
+      "defaultValue": "1.5.9.RELEASE"
+    },
+    {
+      "name": "camelcase-name",
+      "type": "virtual",
+      "script": "return boiler.string.toCamelCase(boiler.params.name)"
+    },
+    {
+      "name": "pascalcase-name",
+      "type": "virtual",
+      "script": "return boiler.string.toPascalCase(boiler.params.name)"
+    }
+  ],
+  "templates": [
+    {
+      "name": "project",
+      "outDir": "{{name}}",
+      "require": [
+        "name",
+        "pascalcase-name",
+        "spring-boot-version",
+        "group",
+        "version",
+        "force",
+        {
+          "name": "use-mongo",
+          "displayName": "Use MongoDB",
+          "description": "Add Spring Data MongoDB Gradle Dependency (y/n)",
+          "type": "optional",
+          "defaultValue": "n"
+        },
+        {
+          "name": "package",
+          "type": "virtual",
+          "script": "return boiler.params.group"
+        },
+        {
+          "name": "package-path",
+          "type": "virtual",
+          "script": "return boiler.params.package.replace(new RegExp(/\\./, \"g\"), path.sep);"
+        }
+      ],
+      "include": [
+        {
+          "name": "Application.java.boiler",
+          "outDir": "src/main/java/{{package-path}}"
+        },
+        {
+          "name": "ApplicationTests.java.boiler",
+          "outDir": "src/test/java/{{package-path}}"
+        },
+        {
+          "name": "application.yml.boiler",
+          "outDir": "src/main/resources"
+        },
+        {
+          "name": "application.yml.boiler",
+          "outDir": "src/test/resources"
+        },
+        "build.gradle.boiler",
+        "README",
+        "TODO"
+      ]
+    },
+    {
+      "name": "README",
+      "require": [
+        "name",
+        "pascalcase-name"
+      ],
+      "include": [
+        "README.md.boiler"
+      ]
+    },
+    {
+      "name": "TODO",
+      "include": [
+        "TODO.md.boiler"
+      ]
+    }
+  ],
+  "output": {
+    "file": {
+      "prefix": "{{pascalcase-class}}",
+      "replace": [
+        {
+          "target": "\\.boiler$",
+          "with": ""
+        },
+        {
+          "target": "Application\\.java$",
+          "with": "{{pascalcase-name}}Application.java"
+        },
+        {
+          "target": "ApplicationTests\\.java$",
+          "with": "{{pascalcase-name}}ApplicationTests.java"
+        }
+      ]
+    }
+  }
+}
