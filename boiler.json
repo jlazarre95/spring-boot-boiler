@@ -2,9 +2,22 @@
   "params": [
     {
       "name": "name",
-      "displayName": "Project Name",
+      "displayName": "Project name",
       "description": "Name of the Spring Boot project",
       "type": "positional"
+    },
+    {
+      "name": "class-name",
+      "displayName": "Class name",
+      "description": "Name of the class",
+      "type": "positional"
+    },
+    {
+      "name": "plural-class-name",
+      "displayName": "Pural class name",
+      "description": "Plural form of the class name",
+      "type": "virtual",
+      "script": "return boiler.string.toPlural(boiler.params['class-name'])"
     },
     {
       "name": "version",
@@ -20,9 +33,26 @@
       "type": "optional"
     },
     {
+      "name": "package",
+      "displayName": "Java package",
+      "description": "(e.g., com.company.project)",
+      "type": "optional"
+    },
+    {
+      "name": "package-path",
+      "type": "virtual",
+      "script": "return boiler.params.package.replace(new RegExp(/\\./, 'g'), path.sep)"
+    },
+    {
       "name": "force",
       "displayName": "Force",
-      "description": "Force creation of project (y/n)",
+      "description": "Force creation of project",
+      "type": "flag"
+    },
+    {
+      "name": "skip-fields",
+      "displayName": "Skip Fields",
+      "description": "Skip selection of class fields",
       "type": "flag"
     },
     {
@@ -41,9 +71,108 @@
       "name": "pascalcase-name",
       "type": "virtual",
       "script": "return boiler.string.toPascalCase(boiler.params.name)"
+    },
+    {
+      "name": "camelcase-class-name",
+      "type": "virtual",
+      "script": "return boiler.string.toCamelCase(boiler.params['class-name'])"
+    },
+    {
+      "name": "pascalcase-class-name",
+      "type": "virtual",
+      "script": "return boiler.string.toPascalCase(boiler.params['class-name'])"
     }
   ],
   "templates": [
+    {
+      "name": "class",
+      "outDir": "src/main/java/{{package-path}}",
+      "require": [
+        "class-name",
+        "pascalcase-class-name",
+        "package",
+        "package-path",
+        "skip-fields"
+      ],
+      "include": [
+        "{{ClassName}}.java.boiler"
+      ]
+    },
+    {
+      "name": "controller",
+      "require": [
+        "class-name",
+        "plural-class-name",
+        "camelcase-class-name",
+        "pascalcase-class-name",
+        "package",
+        "package-path"
+      ],
+      "include": [
+        {
+          "name": "{{ClassName}}Controller.java.boiler",
+          "outDir": "src/main/java/{{package-path}}"
+        },
+        {
+          "name": "{{ClassName}}ControllerTests.java.boiler",
+          "outDir": "src/test/java/{{package-path}}"
+        }      
+      ]
+    },
+    {
+      "name": "service",
+      "require": [
+        "class-name",
+        "camelcase-class-name",
+        "pascalcase-class-name",
+        "package",
+        "package-path"
+      ],
+      "include": [
+        {
+          "name": "{{ClassName}}Service.java.boiler",
+          "outDir": "src/main/java/{{package-path}}"
+        },
+        {
+          "name": "{{ClassName}}ServiceImpl.java.boiler",
+          "outDir": "src/main/java/{{package-path}}"
+        },
+        {
+          "name": "{{ClassName}}ServiceImplTests.java.boiler",
+          "outDir": "src/test/java/{{package-path}}"
+        }
+      ]
+    },
+    {
+      "name": "repository",
+      "outDir": "src/main/java/{{package-path}}",
+      "require": [
+        "class-name",
+        "camelcase-class-name",
+        "pascalcase-class-name",
+        "package",
+        "package-path"
+      ],
+      "include": [
+        "{{ClassName}}Repository.java.boiler"
+      ]
+    },
+    {
+      "name": "readme",
+      "require": [
+        "name",
+        "pascalcase-name"
+      ],
+      "include": [
+        "README.md.boiler"
+      ]
+    },
+    {
+      "name": "todo",
+      "include": [
+        "TODO.md.boiler"
+      ]
+    },
     {
       "name": "project",
       "outDir": "{{name}}",
@@ -73,11 +202,11 @@
       ],
       "include": [
         {
-          "name": "Application.java.boiler",
+          "name": "{{ProjectName}}Application.java.boiler",
           "outDir": "src/main/java/{{package-path}}"
         },
         {
-          "name": "ApplicationTests.java.boiler",
+          "name": "{{ProjectName}}ApplicationTests.java.boiler",
           "outDir": "src/test/java/{{package-path}}"
         },
         {
@@ -89,42 +218,25 @@
           "outDir": "src/test/resources"
         },
         "build.gradle.boiler",
-        "README",
-        "TODO"
-      ]
-    },
-    {
-      "name": "README",
-      "require": [
-        "name",
-        "pascalcase-name"
-      ],
-      "include": [
-        "README.md.boiler"
-      ]
-    },
-    {
-      "name": "TODO",
-      "include": [
-        "TODO.md.boiler"
+        "readme",
+        "todo"
       ]
     }
   ],
   "output": {
     "file": {
-      "prefix": "{{pascalcase-class}}",
       "replace": [
         {
           "target": "\\.boiler$",
           "with": ""
         },
         {
-          "target": "Application\\.java$",
-          "with": "{{pascalcase-name}}Application.java"
+          "target": "{{ProjectName}}",
+          "with": "{{pascalcase-name}}"
         },
         {
-          "target": "ApplicationTests\\.java$",
-          "with": "{{pascalcase-name}}ApplicationTests.java"
+          "target": "{{ClassName}}",
+          "with": "{{pascalcase-class-name}}"
         }
       ]
     }

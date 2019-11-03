@@ -1,0 +1,28 @@
+package {{package}};
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class {{pascalcase-class-name}}ServiceImplTests {
+
+    private {{pascalcase-class-name}}ServiceImpl {{camelcase-class-name}}ServiceImpl;
+
+    @Before
+    public void setUp() {
+        this.{{camelcase-class-name}}ServiceImpl = new {{pascalcase-class-name}}ServiceImpl();
+    }
+
+    @After
+    public void tearDown() {
+
+    }
+
+    @Test
+    public void testNotNull() {
+        assertThat(this.{{camelcase-class-name}}ServiceImpl).isNotNull();
+    }
+
+}

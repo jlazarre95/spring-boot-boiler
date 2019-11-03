@@ -1,0 +1,7 @@
+package {{package}};
+
+public class {{pascalcase-class-name}} {
+    {{fields}}
+    public {{pascalcase-class-name}}() { }
+    {{getters-and-setters}}
+}

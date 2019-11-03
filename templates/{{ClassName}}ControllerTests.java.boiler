@@ -1,0 +1,40 @@
+package {{package}};
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@RunWith(SpringRunner.class)
+@WebMvcTest({{pascalcase-class-name}}Controller.class)
+public class {{pascalcase-class-name}}ControllerTests {
+
+    @Autowired 
+    private MockMvc mockMvc;
+
+    @Before
+    public void setUp() {
+
+    }
+
+    @After
+    public void tearDown() {
+        
+    }
+
+    @Test
+    public void testRoot() throws Exception {
+        mockMvc.perform(get("/api/{{plural-class-name}}"))
+            .andExpect(status().isOk())
+            .andDo(print());
+    }
+
+}

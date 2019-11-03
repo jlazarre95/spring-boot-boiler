@@ -1,0 +1,12 @@
+package {{package}};
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class {{pascalcase-class-name}}ServiceImpl implements {{pascalcase-class-name}}Service {
+
+    @Autowired
+    public {{pascalcase-class-name}}ServiceImpl() { }
+
+}

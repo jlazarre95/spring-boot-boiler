@@ -18,7 +18,6 @@ const deps = {
 
 boiler.params.dependencies = "";
 for(const dep in deps) {
-    console.log(boiler.params[dep]);
     if(boiler.params[dep]) {
         boiler.params.dependencies += `\n\t${deps[dep]}`;
     }
