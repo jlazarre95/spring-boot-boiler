@@ -23,8 +23,7 @@
       "name": "force",
       "displayName": "Force",
       "description": "Force creation of project (y/n)",
-      "type": "optional",
-      "defaultValue": "n"
+      "type": "flag"
     },
     {
       "name": "spring-boot-version",
@@ -59,8 +58,7 @@
           "name": "use-mongo",
           "displayName": "Use MongoDB",
           "description": "Add Spring Data MongoDB Gradle Dependency (y/n)",
-          "type": "optional",
-          "defaultValue": "n"
+          "type": "flag"
         },
         {
           "name": "package",

@@ -1,6 +1,6 @@
 const projectPath = boiler.params.name;
 
-if(boiler.params.force === "y") {
+if(boiler.params.force) {
     fs.emptyDirSync(projectPath);
 } else { 
     fs.mkdirSync(projectPath);
@@ -18,7 +18,8 @@ const deps = {
 
 boiler.params.dependencies = "";
 for(const dep in deps) {
-    if(boiler.params[dep] === "y") {
+    console.log(boiler.params[dep]);
+    if(boiler.params[dep]) {
         boiler.params.dependencies += `\n\t${deps[dep]}`;
     }
 }
