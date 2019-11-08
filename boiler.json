@@ -158,6 +158,40 @@
       ]
     },
     {
+      "name": "api",
+      "outDir": "src/main/java/{{package-path}}",
+      "require": [
+        {
+          "name": "api-name",
+          "displayName": "API name",
+          "description": "Name of the API",
+          "type": "positional"
+        },
+        {
+          "name": "plural-api-name",
+          "displayName": "Pural API name",
+          "description": "Plural form of the API name",
+          "type": "virtual",
+          "script": "return boiler.string.toPlural(boiler.params['api-name'])"
+        },
+        {
+          "name": "camelcase-api-name",
+          "type": "virtual",
+          "script": "return boiler.string.toCamelCase(boiler.params['api-name'])"
+        },
+        {
+          "name": "pascalcase-api-name",
+          "type": "virtual",
+          "script": "return boiler.string.toPascalCase(boiler.params['api-name'])"
+        },
+        "package",
+        "package-path"
+      ],
+      "include": [
+        "{{ClassName}}Repository.java.boiler"
+      ]
+    },
+    {
       "name": "readme",
       "require": [
         "name",
@@ -218,6 +252,7 @@
           "outDir": "src/test/resources"
         },
         "build.gradle.boiler",
+        "settings.gradle.boiler",
         "readme",
         "todo"
       ]
