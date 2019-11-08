@@ -1,4 +1,4 @@
-const message = `Would you like to create a new package for this class? (y/n)`;
+const message = `Would you like to create a new package? (y/n)`;
 const createPackage = (await new boiler.prompt.TextPrompt().show(message)).getValue() === "y";
 
 if(createPackage) {
